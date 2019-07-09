@@ -23,12 +23,21 @@ ModuleModuleSpectacleName = ModuleSpectacle
 ModuleModuleSpectacleDesc = ModuleSpectacle description
 
 #
+#Object
+#
+
+#Properties
+HelpTextLabel = Show's name
+HelpTextAmount = Entrance price of the show
+
+#
 # Menus
 #
 
-#Menu de gauche
+#LeftMenu
 ShowsList = List of shows
 NewShow = New show
+
 
 #
 # Admin page
@@ -65,3 +74,10 @@ MyWidgetDescription = My widget description
 #
 
 ModuleName = Show
+
+#
+#  Tabs
+#
+
+#Titre
+ShowM = Show

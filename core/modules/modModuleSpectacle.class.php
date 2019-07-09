@@ -69,7 +69,7 @@ class modModuleSpectacle extends DolibarrModules
 		$this->editor_url = 'https://www.example.com';
 
 		// Possible values for version are: 'development', 'experimental', 'dolibarr', 'dolibarr_deprecated' or a version string like 'x.y.z'
-		$this->version = '1.0.0';
+		$this->version = '2.0.0';
 
         //Url to the file with your last numberversion of this module
         //$this->url_last_version = 'http://www.example.com/versionmodule.txt';
@@ -95,6 +95,8 @@ class modModuleSpectacle extends DolibarrModules
 			'hooks' => array('data'=>array('hookcontext1','hookcontext2'), 'entity'=>'0'), 	// Set here all hooks context managed by module. To find available hook context, make a "grep -r '>initHooks(' *" on source code. You can also set hook context 'all'
 			'moduleforexternal' => 0							// Set this to 1 if feature of module are opened to external users
 		);
+
+//        $this->module_parts = array('hooks' => array('searchform'));
 
 		// Data directories to create when module is enabled.
 		// Example: this->dirs = array("/modulespectacle/temp","/modulespectacle/subdir");

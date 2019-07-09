@@ -95,7 +95,7 @@ if ($id > 0 || ! empty($ref))
 
 	$head = spectaclePrepareHead($object);
 
-	dol_fiche_head($head, 'note', $langs->trans("spectacle"), -1, 'spectacle@modulespectacle');
+	dol_fiche_head($head, 'note', $langs->trans("ShowM"), -1, 'spectacle@modulespectacle');
 
 	// Object card
 	// ------------------------------------------------------------

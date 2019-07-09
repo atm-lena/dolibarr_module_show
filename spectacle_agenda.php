@@ -141,7 +141,7 @@ if ($object->id > 0)
 	$head = spectaclePrepareHead($object);
 
 
-	dol_fiche_head($head, 'agenda', $langs->trans("spectacle"), -1, 'spectacle@modulespectacle');
+	dol_fiche_head($head, 'agenda', $langs->trans("ShowM"), -1, 'spectacle@modulespectacle');
 
 	// Object card
 	// ------------------------------------------------------------

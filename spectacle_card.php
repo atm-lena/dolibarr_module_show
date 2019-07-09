@@ -208,7 +208,7 @@ if ($action == 'create')
 // Part to edit record
 if (($id || $ref) && $action == 'edit')
 {
-	print load_fiche_titre($langs->trans("spectacle"));
+	print load_fiche_titre($langs->trans("ShowM"));
 
 	print '<form method="POST" action="'.$_SERVER["PHP_SELF"].'">';
     print '<input type="hidden" name="token" value="'.$_SESSION['newtoken'].'">';
@@ -244,7 +244,7 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
     $res = $object->fetch_optionals();
 
 	$head = spectaclePrepareHead($object);
-	dol_fiche_head($head, 'card', $langs->trans("spectacle"), -1, 'spectacle@modulespectacle');
+	dol_fiche_head($head, 'card', $langs->trans("Show"), -1, 'spectacle@modulespectacle');
 
 	$formconfirm = '';
 

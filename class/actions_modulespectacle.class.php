@@ -240,5 +240,30 @@ class ActionsModuleSpectacle
 		return $ret;
 	}
 
+//    function printSearchForm($parameters, $object, $action)
+//    {
+//
+//        print('hey');
+
+
+        //        global $conf,$langs;
+//
+//        $ret='';
+//        $ret.='<div class="menu_titre">';
+//        $ret.='<a class="vsmenu" href="'.DOL_URL_ROOT.'/modulespectacle/spectacle_list.php'.'">';
+//        $ret.=$title.'</a><br>';
+//        $ret.='</div>';
+//        $ret.='<form action="'.DOL_URL_ROOT.'/modulespectacle/spectacle_list.php'.'" method="post">';
+//        $ret.='<input type="hidden" name="token" value="'.$_SESSION['newtoken'].'">';
+//        $ret.='<input type="hidden" name="mode" value="search">';
+//        $ret.='<input type="text" class="flat" ';
+//        if (! empty($conf->global->MAIN_HTML5_PLACEHOLDER)) $ret.=' placeholder="'.$langs->trans("SearchOf").''.strip_tags($title).'"';
+//        else $ret.=' title="'.$langs->trans("SearchOf").''.strip_tags($title).'"';
+//        $ret.=' name="search_ref" size="10" />&nbsp;';
+//        $ret.='<input type="submit" class="button" value="'.$langs->trans("Go").'">';
+//        $ret.="</form>\n";
+//        return $ret;
+//    }
+
 	/* Add here any other hooked methods... */
 }

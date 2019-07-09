@@ -402,7 +402,7 @@ class spectacle extends CommonObject
 
         $result = '';
 
-        $label = '<u>' . $langs->trans("spectacle") . '</u>';
+        $label = '<u>' . $langs->trans("ShowM") . '</u>';
         $label.= '<br>';
         $label.= '<b>' . $langs->trans('Ref') . ':</b> ' . $this->ref;
 

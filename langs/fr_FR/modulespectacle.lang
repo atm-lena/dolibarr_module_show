@@ -23,6 +23,14 @@ ModuleModuleSpectacleName = ModuleSpectacle
 ModuleModuleSpectacleDesc = Description de ModuleSpectacle
 
 #
+#Objet
+#
+
+#Propriétés
+HelpTextLabel = Nom du spectacle
+HelpTextAmount = Prix d'entrée du spectacle
+
+#
 # Menus
 #
 
@@ -54,3 +62,11 @@ MyPageName = Nom de ma page
 #
 MyWidget = Mon widget
 MyWidgetDescription = Description de mon widget
+
+
+#
+# Onglets
+#
+
+#Titre
+ShowM = Spectacle

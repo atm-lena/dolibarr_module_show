@@ -98,7 +98,7 @@ include_once DOL_DOCUMENT_ROOT . '/core/actions_linkedfiles.inc.php';
 
 $form = new Form($db);
 
-$title=$langs->trans("spectacle").' - '.$langs->trans("Files");
+$title=$langs->trans("ShowM").' - '.$langs->trans("Files");
 $help_url='';
 //$help_url='EN:Module_Third_Parties|FR:Module_Tiers|ES:Empresas';
 llxHeader('', $title, $help_url);
@@ -110,7 +110,7 @@ if ($object->id)
 	 */
 	$head = spectaclePrepareHead($object);
 
-	dol_fiche_head($head, 'document', $langs->trans("spectacle"), -1, 'spectacle@modulespectacle');
+	dol_fiche_head($head, 'document', $langs->trans("ShowM"), -1, 'spectacle@modulespectacle');
 
 
 	// Build file list
