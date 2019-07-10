@@ -190,7 +190,7 @@ class modModuleSpectacle extends DolibarrModules
         // Boxes/Widgets
 		// Add here list of php file(s) stored in modulespectacle/core/boxes that contains class to show a widget.
         $this->boxes = array(
-        	0=>array('file'=>'modulespectaclewidget1.php@modulespectacle','note'=>'Widget provided by ModuleSpectacle','enabledbydefaulton'=>'Home'),
+        	0=>array('file'=>'bow_shows.php@modulespectacle','note'=>'Widget provided by ModuleSpectacle','enabledbydefaulton'=>'Home'),
         	//1=>array('file'=>'modulespectaclewidget2.php@modulespectacle','note'=>'Widget provided by ModuleSpectacle'),
         	//2=>array('file'=>'modulespectaclewidget3.php@modulespectacle','note'=>'Widget provided by ModuleSpectacle')
         );

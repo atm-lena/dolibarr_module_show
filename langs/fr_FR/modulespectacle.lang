@@ -20,7 +20,12 @@
 # Module label 'ModuleModuleSpectacleName'
 ModuleModuleSpectacleName = ModuleSpectacle
 # Module description 'ModuleModuleSpectacleDesc'
-ModuleModuleSpectacleDesc = Description de ModuleSpectacle
+ModuleModuleSpectacleDesc = Description du module de spectacles
+
+#
+#Boxe
+#
+ModuleSpectacleBoxDescription = Les 5 derniers spectacles modifiés
 
 #
 #Objet

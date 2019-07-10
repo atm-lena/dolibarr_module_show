@@ -23,6 +23,11 @@ ModuleModuleSpectacleName = ModuleSpectacle
 ModuleModuleSpectacleDesc = ModuleSpectacle description
 
 #
+#Boxe
+#
+ModuleSpectacleBoxDescription = The last 5 shows modified
+
+#
 #Object
 #
 

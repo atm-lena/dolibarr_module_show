@@ -30,7 +30,7 @@ require_once DOL_DOCUMENT_ROOT . '/core/class/commonobject.class.php';
 /**
  * Class for spectacle
  */
-class spectacle extends CommonObject
+class Spectacle extends CommonObject
 {
 	/**
 	 * @var string ID to identify managed object
@@ -364,6 +364,8 @@ class spectacle extends CommonObject
 	 */
 	public function update(User $user, $notrigger = false)
 	{
+        $this->tms =dol_now();
+
 		return $this->updateCommon($user, $notrigger);
 	}
 

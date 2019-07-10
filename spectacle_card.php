@@ -244,7 +244,7 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
     $res = $object->fetch_optionals();
 
 	$head = spectaclePrepareHead($object);
-	dol_fiche_head($head, 'card', $langs->trans("Show"), -1, 'spectacle@modulespectacle');
+	dol_fiche_head($head, 'card', $langs->trans("ShowM"), -1, 'spectacle@modulespectacle');
 
 	$formconfirm = '';
 
