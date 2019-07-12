@@ -16,3 +16,5 @@
 INSERT INTO llx_modulespectacle_myobject VALUES (
 	1, 1, 'mydata'
 );
+
+INSERT INTO llx_modulespectacle_spectacle_category (label) VALUES ('Thêâtre'), ('Formule 1'), ('Concert');

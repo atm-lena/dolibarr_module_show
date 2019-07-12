@@ -92,6 +92,7 @@ class Spectacle extends CommonObject
 		'fk_user_modif' => array('type'=>'integer', 'label'=>'UserModif', 'enabled'=>1, 'visible'=>-2, 'position'=>511, 'notnull'=>-1,),
 		'import_key' => array('type'=>'varchar(14)', 'label'=>'ImportId', 'enabled'=>1, 'visible'=>-2, 'position'=>1000, 'notnull'=>-1,),
 		'date' => array('type'=>'datetime', 'label'=>'Date', 'enabled'=>1, 'visible'=>1, 'position'=>32, 'notnull'=>-1, 'comment'=>"Date of show",),
+        'category' => array('type'=>'integer', 'label'=>'Category', 'enabled'=>1, 'visible'=>2, 'position'=>33, 'notnull'=>-1),
 	);
 	public $rowid;
 	public $ref;
@@ -103,6 +104,7 @@ class Spectacle extends CommonObject
 	public $fk_user_modif;
 	public $import_key;
 	public $date;
+    public $category;
 	// END MODULEBUILDER PROPERTIES
 
 
@@ -181,6 +183,11 @@ class Spectacle extends CommonObject
 	 */
 	public function create(User $user, $notrigger = false)
 	{
+        if($_POST['category'] != '-1'){
+            $this->category = $_POST['category'];
+        } else {
+            $this->category = null;
+        }
 		return $this->createCommon($user, $notrigger);
 	}
 
@@ -365,7 +372,11 @@ class Spectacle extends CommonObject
 	public function update(User $user, $notrigger = false)
 	{
         $this->tms =dol_now();
-
+        if($_POST['category'] != '-1'){
+            $this->category = $_POST['category'];
+        } else {
+            $this->category = null;
+        }
 		return $this->updateCommon($user, $notrigger);
 	}
 

@@ -428,6 +428,7 @@ print '</tr>'."\n";
 // Fields title label
 // --------------------------------------------------------------------
 print '<tr class="liste_titre">';
+
 foreach($object->fields as $key => $val)
 {
 	$cssforfield='';
@@ -467,6 +468,7 @@ $totalarray=array();
 while ($i < min($num, $limit))
 {
 	$obj = $db->fetch_object($resql);
+
 	if (empty($obj)) break;		// Should not happen
 
 	// Store properties in $object
@@ -479,7 +481,7 @@ while ($i < min($num, $limit))
 	// Show here line of result
 	print '<tr class="oddeven">';
 	foreach($object->fields as $key => $val)
-	{
+    {
 	    $cssforfield='';
 	    if (in_array($val['type'], array('date','datetime','timestamp'))) $cssforfield.=($cssforfield?' ':'').'center';
 	    elseif ($key == 'status') $cssforfield.=($cssforfield?' ':'').'center';

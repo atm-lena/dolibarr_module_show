@@ -28,3 +28,6 @@ CREATE TABLE llx_modulespectacle_spectacle(
 	date datetime
 	-- END MODULEBUILDER FIELDS
 ) ENGINE=innodb;
+
+ALTER TABLE llx_modulespectacle_spectacle ADD COLUMN category integer;
+ALTER TABLE llx_modulespectacle_spectacle ADD FOREIGN KEY fk_llx_modulespectacle_spectacle_rowid(category) REFERENCES llx_modulespectacle_spectacle_category(rowid) ON DELETE CASCADE;

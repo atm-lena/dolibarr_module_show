@@ -73,6 +73,7 @@ $confirm    = GETPOST('confirm', 'alpha');
 $cancel     = GETPOST('cancel', 'aZ09');
 $contextpage= GETPOST('contextpage','aZ')?GETPOST('contextpage','aZ'):'spectaclecard';   // To manage different context of search
 $backtopage = GETPOST('backtopage', 'alpha');
+$category=GETPOST('category', 'alpha');
 
 // Initialize technical objects
 $object=new spectacle($db);
@@ -189,6 +190,11 @@ if ($action == 'create')
 	// Common attributes
 	include DOL_DOCUMENT_ROOT . '/core/tpl/commonfields_add.tpl.php';
 
+
+    print '<tr id="field_category"><td class="titlefieldcreate">Catégorie</td><td>';
+    select_all_categories ($db);
+    print '</td></tr>';
+
 	// Other attributes
 	include DOL_DOCUMENT_ROOT . '/core/tpl/extrafields_add.tpl.php';
 
@@ -222,6 +228,10 @@ if (($id || $ref) && $action == 'edit')
 
 	// Common attributes
 	include DOL_DOCUMENT_ROOT . '/core/tpl/commonfields_edit.tpl.php';
+
+    print '<tr id="field_category"><td class="titlefieldcreate">Catégorie</td><td>';
+    select_all_categories ($db);
+    print '</td></tr>';
 
 	// Other attributes
 	include DOL_DOCUMENT_ROOT . '/core/tpl/extrafields_edit.tpl.php';
@@ -467,6 +477,43 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 	 */
 }
 
+function select_all_categories ($db)
+{
+    $sql = "SELECT c.rowid, c.label";
+    $sql .= " FROM " . MAIN_DB_PREFIX . "modulespectacle_spectacle_category as c";
+    $sql .= " ORDER BY c.label";
+    $result = $db->query($sql);
+
+    if ($result) {
+        $num = $db->num_rows($result);
+        $i = 0;
+        while ($i < $num) {
+            $objp = $db->fetch_object($result);
+            if ($objp) {
+                $categories[$i]['label'] = $objp->label;
+                $categories[$i]['id'] = $objp->rowid;
+            }
+            $i++;
+        }
+        $db->free($result);
+    } else dol_print_error($db);
+
+    if($result){
+        print'<select class="category" name="category" id="category">';
+        print '<option value="-1">&nbsp;</option>';
+        foreach($categories as $key => $value)
+                {
+                    print'<option value="'.$value['id'].'">'.$value['label'].'</option>';
+
+                }
+    }
+        print '</select>';
+//        print '<a href=""> Créer une catégorie</a>';
+        print "\n";
+
+}
+
 // End of page
 llxFooter();
 $db->close();
+
