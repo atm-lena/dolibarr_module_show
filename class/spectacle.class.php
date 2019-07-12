@@ -183,11 +183,13 @@ class Spectacle extends CommonObject
 	 */
 	public function create(User $user, $notrigger = false)
 	{
-        if($_POST['category'] != '-1'){
+        // Value of category
+	    if($_POST['category'] != '-1'){
             $this->category = $_POST['category'];
         } else {
             $this->category = null;
         }
+
 		return $this->createCommon($user, $notrigger);
 	}
 

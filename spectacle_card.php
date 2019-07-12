@@ -190,7 +190,7 @@ if ($action == 'create')
 	// Common attributes
 	include DOL_DOCUMENT_ROOT . '/core/tpl/commonfields_add.tpl.php';
 
-
+    // Category attributes
     print '<tr id="field_category"><td class="titlefieldcreate">Catégorie</td><td>';
     select_all_categories ($db);
     print '</td></tr>';
@@ -229,6 +229,7 @@ if (($id || $ref) && $action == 'edit')
 	// Common attributes
 	include DOL_DOCUMENT_ROOT . '/core/tpl/commonfields_edit.tpl.php';
 
+    // Category attributes
     print '<tr id="field_category"><td class="titlefieldcreate">Catégorie</td><td>';
     select_all_categories ($db);
     print '</td></tr>';
