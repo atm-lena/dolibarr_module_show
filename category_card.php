@@ -17,29 +17,10 @@
  */
 
 /**
- *   	\file       spectacle_card.php
+ *   	\file       spectacle_category.php
  *		\ingroup    modulespectacle
- *		\brief      Page to create/edit/view spectacle
+ *		\brief      Page to create category
  */
-
-//if (! defined('NOREQUIREDB'))              define('NOREQUIREDB','1');					// Do not create database handler $db
-//if (! defined('NOREQUIREUSER'))            define('NOREQUIREUSER','1');				// Do not load object $user
-//if (! defined('NOREQUIRESOC'))             define('NOREQUIRESOC','1');				// Do not load object $mysoc
-//if (! defined('NOREQUIRETRAN'))            define('NOREQUIRETRAN','1');				// Do not load object $langs
-//if (! defined('NOSCANGETFORINJECTION'))    define('NOSCANGETFORINJECTION','1');		// Do not check injection attack on GET parameters
-//if (! defined('NOSCANPOSTFORINJECTION'))   define('NOSCANPOSTFORINJECTION','1');		// Do not check injection attack on POST parameters
-//if (! defined('NOCSRFCHECK'))              define('NOCSRFCHECK','1');					// Do not check CSRF attack (test on referer + on token if option MAIN_SECURITY_CSRF_WITH_TOKEN is on).
-//if (! defined('NOTOKENRENEWAL'))           define('NOTOKENRENEWAL','1');				// Do not roll the Anti CSRF token (used if MAIN_SECURITY_CSRF_WITH_TOKEN is on)
-//if (! defined('NOSTYLECHECK'))             define('NOSTYLECHECK','1');				// Do not check style html tag into posted data
-//if (! defined('NOREQUIREMENU'))            define('NOREQUIREMENU','1');				// If there is no need to load and show top and left menu
-//if (! defined('NOREQUIREHTML'))            define('NOREQUIREHTML','1');				// If we don't need to load the html.form.class.php
-//if (! defined('NOREQUIREAJAX'))            define('NOREQUIREAJAX','1');       	  	// Do not load ajax.lib.php library
-//if (! defined("NOLOGIN"))                  define("NOLOGIN",'1');						// If this page is public (can be called outside logged session). This include the NOIPCHECK too.
-//if (! defined('NOIPCHECK'))                define('NOIPCHECK','1');					// Do not check IP defined into conf $dolibarr_main_restrict_ip
-//if (! defined("MAIN_LANG_DEFAULT"))        define('MAIN_LANG_DEFAULT','auto');					// Force lang to a particular value
-//if (! defined("MAIN_AUTHENTICATION_MODE")) define('MAIN_AUTHENTICATION_MODE','aloginmodule');		// Force authentication handler
-//if (! defined("NOREDIRECTBYMAINTOLOGIN"))  define('NOREDIRECTBYMAINTOLOGIN',1);		// The main.inc.php does not make a redirect if not logged, instead show simple error message
-//if (! defined("FORCECSP"))                 define('FORCECSP','none');					// Disable all Content Security Policies
 
 
 // Load Dolibarr environment
@@ -59,40 +40,35 @@ if (! $res) die("Include of main fails");
 
 require_once DOL_DOCUMENT_ROOT.'/core/class/html.formcompany.class.php';
 require_once DOL_DOCUMENT_ROOT.'/core/class/html.formfile.class.php';
-dol_include_once('/modulespectacle/class/spectacle.class.php');
-dol_include_once('/modulespectacle/lib/modulespectacle_spectacle.lib.php');
+dol_include_once('/modulespectacle/class/category.class.php');
+//dol_include_once('/modulespectacle/lib/modulespectacle_spectacle.lib.php');
 
 // Load translation files required by the page
 $langs->loadLangs(array("modulespectacle@modulespectacle","other"));
 
 // Get parameters
 $id			= GETPOST('id', 'int');
-$ref        = GETPOST('ref', 'alpha');
 $action		= GETPOST('action', 'aZ09');
 $confirm    = GETPOST('confirm', 'alpha');
 $cancel     = GETPOST('cancel', 'aZ09');
 $contextpage= GETPOST('contextpage','aZ')?GETPOST('contextpage','aZ'):'spectaclecard';   // To manage different context of search
 $backtopage = GETPOST('backtopage', 'alpha');
-$category=GETPOST('category', 'alpha');
 
 // Initialize technical objects
-$object=new spectacle($db);
-$extrafields = new ExtraFields($db);
+$object=new Category($db);
 $diroutputmassaction=$conf->modulespectacle->dir_output . '/temp/massgeneration/'.$user->id;
-$hookmanager->initHooks(array('spectaclecard','globalcard'));     // Note that conf->hooks_modules contains array
-// Fetch optionals attributes and labels
-$extralabels = $extrafields->fetch_name_optionals_label($object->table_element);
-$search_array_options=$extrafields->getOptionalsFromPost($object->table_element,'','search_');
+$hookmanager->initHooks(array('categorycard','globalcard'));     // Note that conf->hooks_modules contains array
+
 
 // Initialize array of search criterias
-$search_all=trim(GETPOST("search_all",'alpha'));
-$search=array();
-foreach($object->fields as $key => $val)
-{
-	if (GETPOST('search_'.$key,'alpha')) $search[$key]=GETPOST('search_'.$key,'alpha');
-}
-
-if (empty($action) && empty($id) && empty($ref)) $action='view';
+//$search_all=trim(GETPOST("search_all",'alpha'));
+//$search=array();
+//foreach($object->fields as $key => $val)
+//{
+//	if (GETPOST('search_'.$key,'alpha')) $search[$key]=GETPOST('search_'.$key,'alpha');
+//}
+//
+//if (empty($action) && empty($id) && empty($ref)) $action='view';
 
 // Load object
 include DOL_DOCUMENT_ROOT.'/core/actions_fetchobject.inc.php';  // Must be include, not include_once  // Must be include, not include_once. Include fetch and fetch_thirdparty but not fetch_optionals
@@ -120,10 +96,10 @@ if (empty($reshook))
 
 	$permissiontoadd = $user->rights->modulespectacle->write;
 	$permissiontodelete = $user->rights->modulespectacle->delete || ($permissiontoadd && $object->status == 0);
-    	$backurlforlist = dol_buildpath('/modulespectacle/spectacle_list.php',1);
+    	$backurlforlist = dol_buildpath('/modulespectacle/category_list.php',1);
 	if (empty($backtopage)) {
 	    if (empty($id)) $backtopage = $backurlforlist;
-	    else $backtopage = dol_buildpath('/modulespectacle/spectacle_card.php?id=',1).($id > 0 ? $id : '__ID__');
+	    else $backtopage = dol_buildpath('/modulespectacle/category_card.php?id=',1).($id > 0 ? $id : '__ID__');
     	}
 	$triggermodname = 'MODULESPECTACLE_SPECTACLE_MODIFY';	// Name of trigger action code to execute when we modify record
 
@@ -155,7 +131,7 @@ if (empty($reshook))
 $form=new Form($db);
 $formfile=new FormFile($db);
 
-llxHeader('','spectacle','');
+llxHeader('','category','');
 
 // Example : Adding jquery code
 print '<script type="text/javascript" language="javascript">
@@ -176,7 +152,7 @@ jQuery(document).ready(function() {
 // Part to create
 if ($action == 'create')
 {
-	print load_fiche_titre($langs->trans("NewObject", $langs->transnoentitiesnoconv("spectacle")));
+	print load_fiche_titre($langs->trans("NewObject", $langs->transnoentitiesnoconv("Category")));
 
 	print '<form method="POST" action="'.$_SERVER["PHP_SELF"].'">';
 	print '<input type="hidden" name="token" value="'.$_SESSION['newtoken'].'">';
@@ -189,11 +165,6 @@ if ($action == 'create')
 
 	// Common attributes
 	include DOL_DOCUMENT_ROOT . '/core/tpl/commonfields_add.tpl.php';
-
-    // Category attributes
-    print '<tr id="field_category"><td class="titlefieldcreate">Catégorie</td><td>';
-    select_all_categories ($db);
-    print '</td></tr>';
 
 	// Other attributes
 	include DOL_DOCUMENT_ROOT . '/core/tpl/extrafields_add.tpl.php';
@@ -211,50 +182,12 @@ if ($action == 'create')
 	print '</form>';
 }
 
-// Part to edit record
-if (($id || $ref) && $action == 'edit')
-{
-	print load_fiche_titre($langs->trans("ShowM"));
-
-	print '<form method="POST" action="'.$_SERVER["PHP_SELF"].'">';
-    print '<input type="hidden" name="token" value="'.$_SESSION['newtoken'].'">';
-	print '<input type="hidden" name="action" value="update">';
-	print '<input type="hidden" name="backtopage" value="'.$backtopage.'">';
-	print '<input type="hidden" name="id" value="'.$object->id.'">';
-
-	dol_fiche_head();
-
-	print '<table class="border centpercent">'."\n";
-
-	// Common attributes
-	include DOL_DOCUMENT_ROOT . '/core/tpl/commonfields_edit.tpl.php';
-
-    // Category attributes
-    print '<tr id="field_category"><td class="titlefieldcreate">Catégorie</td><td>';
-    select_all_categories ($db);
-    print '</td></tr>';
-
-	// Other attributes
-	include DOL_DOCUMENT_ROOT . '/core/tpl/extrafields_edit.tpl.php';
-
-	print '</table>';
-
-	dol_fiche_end();
-
-	print '<div class="center"><input type="submit" class="button" name="save" value="'.$langs->trans("Save").'">';
-	print ' &nbsp; <input type="submit" class="button" name="cancel" value="'.$langs->trans("Cancel").'">';
-	print '</div>';
-
-	print '</form>';
-
-}
-
 // Part to show record
 if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'create')))
 {
     $res = $object->fetch_optionals();
 
-	$head = spectaclePrepareHead($object);
+	$head = categoryPrepareHead($object);
 	dol_fiche_head($head, 'card', $langs->trans("ShowM"), -1, 'spectacle@modulespectacle');
 
 	$formconfirm = '';
@@ -509,7 +442,7 @@ function select_all_categories ($db)
                 }
     }
         print '</select>';
-        print '<a href="category_card.php?action=create"> Créer une catégorie</a>';
+//        print '<a href=""> Créer une catégorie</a>';
         print "\n";
 
 }
