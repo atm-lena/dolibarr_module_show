@@ -183,9 +183,14 @@ class Spectacle extends CommonObject
 	 */
 	public function create(User $user, $notrigger = false)
 	{
-        // Value of category
+	    // Value of category
 	    if($_POST['category'] != '-1'){
             $this->category = $_POST['category'];
+            if($_POST['amount'] == 0) {
+                $sql = "SELECT * FROM llx_modulespectacle_spectacle_category WHERE rowid ='".$this->category."';";
+                $res = $this->db->query($sql);
+                $this->amount = $this->db->fetch_object($res)->default_amount;
+            }
         } else {
             $this->category = null;
         }
@@ -376,6 +381,11 @@ class Spectacle extends CommonObject
         $this->tms =dol_now();
         if($_POST['category'] != '-1'){
             $this->category = $_POST['category'];
+            if($_POST['amount'] == 0) {
+                $sql = "SELECT * FROM llx_modulespectacle_spectacle_category WHERE rowid ='".$this->category."';";
+                $res = $this->db->query($sql);
+                $this->amount = $this->db->fetch_object($res)->default_amount;
+            }
         } else {
             $this->category = null;
         }
