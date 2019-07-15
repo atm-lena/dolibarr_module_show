@@ -498,7 +498,14 @@ while ($i < min($num, $limit))
 			print $val['css'];
 			if ($cssforfield || $val['css']) print '"';
 			print '>';
-			print $object->showOutputField($val, $key, $obj->$key, '');
+			if($key == 'category'){
+                $sql = "SELECT s.label FROM llx_modulespectacle_spectacle_category as s WHERE rowid=4;";
+                $res = $db->query($sql);
+                $category = $db->fetch_object($res);
+                print ($category->label);
+            } else {
+                print $object->showOutputField($val, $key, $obj->$key, '');
+            }
 			print '</td>';
 			if (! $i) $totalarray['nbfield']++;
 			if (! empty($val['isameasure']))
