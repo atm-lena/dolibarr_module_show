@@ -124,7 +124,7 @@ class modModuleSpectacle extends DolibarrModules
 		//                             1=>array('MODULESPECTACLE_MYNEWCONST2','chaine','myvalue','This is another constant to add',0, 'current', 1)
 		// );
 		$this->const = array(
-			1=>array('MODULESPECTACLE_AMOUNT', 'chaine', '300', '', 1, 'allentities', 1)
+			1=>array('MODULESPECTACLE_DEFAULTAMOUNT', 'chaine', '1', '', 1, 'allentities', 1)
 		);
 
 		// Some keys to add into the overwriting translation tables

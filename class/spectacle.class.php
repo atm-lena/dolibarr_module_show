@@ -195,7 +195,7 @@ class Spectacle extends CommonObject
         } else {
             $this->category = null;
             if($_POST['amount'] == 0) {
-                $this->amount = $conf->global->MODULESPECTACLE_AMOUNT;
+                $this->amount = $conf->global->MODULESPECTACLE_DEFAULTAMOUNT;
             }
         }
 
@@ -382,6 +382,8 @@ class Spectacle extends CommonObject
 	 */
 	public function update(User $user, $notrigger = false)
 	{
+	    global $conf;
+
         $this->tms =dol_now();
         if($_POST['category'] != '-1'){
             $this->category = $_POST['category'];
@@ -392,6 +394,9 @@ class Spectacle extends CommonObject
             }
         } else {
             $this->category = null;
+            if($_POST['amount'] == 0) {
+                $this->amount = $conf->global->MODULESPECTACLE_DEFAULTAMOUNT;
+            }
         }
 		return $this->updateCommon($user, $notrigger);
 	}
