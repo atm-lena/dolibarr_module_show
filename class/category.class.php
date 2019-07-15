@@ -84,7 +84,7 @@ class Category extends CommonObject
 	public $fields=array(
 		'rowid' => array('type'=>'integer', 'label'=>'TechnicalID', 'enabled'=>1, 'visible'=>-1, 'position'=>1, 'notnull'=>1, 'index'=>1, 'comment'=>"Id",),
 		'label' => array('type'=>'varchar(255)', 'label'=>'Label', 'enabled'=>1, 'visible'=>1, 'position'=>30, 'notnull'=>-1, 'searchall'=>1, 'showoncombobox'=>'1',),
-        'default_amount' => array('type' => 'doubleval(24,8)', 'label'=>'Default Amount', 'enabled'=>1, 'visible'=>1, 'position'=>31, 'notnull'=>-1, 'showoncombobox'=>'1',),
+        'default_amount' => array('type' => 'doubleval(24,8)', 'label'=> 'Amount', 'enabled'=>1, 'visible'=>1, 'position'=>31, 'notnull'=>-1, 'showoncombobox'=>'1',),
 	);
 	public $rowid;
 	public $label;
