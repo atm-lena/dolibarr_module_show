@@ -124,7 +124,7 @@ class modModuleSpectacle extends DolibarrModules
 		//                             1=>array('MODULESPECTACLE_MYNEWCONST2','chaine','myvalue','This is another constant to add',0, 'current', 1)
 		// );
 		$this->const = array(
-			1=>array('MODULESPECTACLE_MYCONSTANT', 'chaine', 'avalue', 'This is a constant to add', 1, 'allentities', 1)
+			1=>array('MODULESPECTACLE_AMOUNT', 'chaine', '300', '', 1, 'allentities', 1)
 		);
 
 		// Some keys to add into the overwriting translation tables
@@ -307,18 +307,31 @@ class modModuleSpectacle extends DolibarrModules
 								'target'=>'',
 								'user'=>2);				                // 0=Menu for internal users, 1=external users, 2=both
         $this->menu[$r++]=array(
-            'fk_menu'=>'fk_mainmenu=modulespectacle',	    // '' if this is a top menu. For left menu, use 'fk_mainmenu=xxx' or 'fk_mainmenu=xxx,fk_leftmenu=yyy' where xxx is mainmenucode and yyy is a leftmenucode
-            'type'=>'left',			                // This is a Left menu entry
-            'titre'=> 'Liste de catégories',
-            'mainmenu'=>'modulespectacle',
-            'leftmenu'=>'modulespectacle_spectacle',
-            'url'=>'/modulespectacle/category_list.php',
-            'langs'=>'modulespectacle@modulespectacle',	        // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
-            'position'=>1100+$r,
-            'enabled'=>'$conf->modulespectacle->enabled',  // Define condition to show or hide menu entry. Use '$conf->modulespectacle->enabled' if entry must be visible if module is enabled. Use '$leftmenu==\'system\'' to show if leftmenu system is selected.
-            'perms'=>'1',			                // Use 'perms'=>'$user->rights->modulespectacle->level1->level2' if you want your menu with a permission rules
-            'target'=>'',
-            'user'=>2);
+                                'fk_menu'=>'fk_mainmenu=modulespectacle',	    // '' if this is a top menu. For left menu, use 'fk_mainmenu=xxx' or 'fk_mainmenu=xxx,fk_leftmenu=yyy' where xxx is mainmenucode and yyy is a leftmenucode
+                                'type'=>'left',			                // This is a Left menu entry
+                                'titre'=> $langs->trans("CategoriesList"),
+                                'mainmenu'=>'modulespectacle',
+                                'leftmenu'=>'modulespectacle_category',
+                                'url'=>'/modulespectacle/category_list.php',
+                                'langs'=>'modulespectacle@modulespectacle',	        // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
+                                'position'=>1100+$r,
+                                'enabled'=>'$conf->modulespectacle->enabled',  // Define condition to show or hide menu entry. Use '$conf->modulespectacle->enabled' if entry must be visible if module is enabled. Use '$leftmenu==\'system\'' to show if leftmenu system is selected.
+                                'perms'=>'1',			                // Use 'perms'=>'$user->rights->modulespectacle->level1->level2' if you want your menu with a permission rules
+                                'target'=>'',
+                                'user'=>2);
+        $this->menu[$r++]=array(
+                                'fk_menu'=>'fk_mainmenu=modulespectacle,fk_leftmenu=modulespectacle_category',	    // '' if this is a top menu. For left menu, use 'fk_mainmenu=xxx' or 'fk_mainmenu=xxx,fk_leftmenu=yyy' where xxx is mainmenucode and yyy is a leftmenucode
+                                'type'=>'left',			                // This is a Left menu entry
+                                'titre'=> $langs->trans("NewCategory"),
+                                'mainmenu'=>'modulespectacle',
+                                'leftmenu'=>'modulespectacle_category',
+                                'url'=>'/modulespectacle/category_card.php?action=create',
+                                'langs'=>'modulespectacle@modulespectacle',	        // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
+                                'position'=>1100+$r,
+                                'enabled'=>'$conf->modulespectacle->enabled',  // Define condition to show or hide menu entry. Use '$conf->modulespectacle->enabled' if entry must be visible if module is enabled. Use '$leftmenu==\'system\'' to show if leftmenu system is selected.
+                                'perms'=>'1',			                // Use 'perms'=>'$user->rights->modulespectacle->level1->level2' if you want your menu with a permission rules
+                                'target'=>'',
+                                'user'=>2);
 
         /* END MODULEBUILDER LEFTMENU SPECTACLE */
 

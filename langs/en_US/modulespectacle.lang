@@ -42,6 +42,8 @@ HelpTextAmount = Entrance price of the show
 #LeftMenu
 ShowsList = List of shows
 NewShow = New show
+CategoriesList = List of categories
+NewCategory = New category
 
 
 #

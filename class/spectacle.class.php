@@ -183,6 +183,7 @@ class Spectacle extends CommonObject
 	 */
 	public function create(User $user, $notrigger = false)
 	{
+        global $conf;
 	    // Value of category
 	    if($_POST['category'] != '-1'){
             $this->category = $_POST['category'];
@@ -193,6 +194,9 @@ class Spectacle extends CommonObject
             }
         } else {
             $this->category = null;
+            if($_POST['amount'] == 0) {
+                $this->amount = $conf->global->MODULESPECTACLE_AMOUNT;
+            }
         }
 
 		return $this->createCommon($user, $notrigger);

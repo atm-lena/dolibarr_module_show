@@ -42,6 +42,8 @@ HelpTextAmount = Prix d'entrée du spectacle
 #Menu de gauche
 ShowsList = Liste de spectacles
 NewShow = Nouveau spectacle
+CategoriesList = Liste de catégories
+NewCategory = Nouvelle catégorie
 
 #
 # Page d'administration
