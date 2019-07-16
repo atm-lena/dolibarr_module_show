@@ -186,22 +186,26 @@ class Spectacle extends CommonObject
 	public function create(User $user, $notrigger = false)
 	{
         global $conf;
+
 	    // Value of category
-	    if($_POST['category'] != '-1'){
+	    if(isset($_POST['category']) && $_POST['category'] != '-1'){
             $this->category = $_POST['category'];
-            if($_POST['amount'] == '') {
+            // Value of amount (of the category)
+            if(isset($_POST['amount']) && $_POST['amount'] == '') {
                 $sql = "SELECT * FROM llx_modulespectacle_spectacle_category WHERE rowid ='".$this->category."';";
                 $res = $this->db->query($sql);
                 $this->amount = $this->db->fetch_object($res)->default_amount;
             }
         } else {
             $this->category = null;
-            if($_POST['amount'] == '') {
+            // Value of amount (global amount)
+            if(isset($_POST['amount']) && $_POST['amount'] == '') {
                 $this->amount = $conf->global->MODULESPECTACLE_DEFAULTAMOUNT;
             }
         }
 
-	    if($_POST['product']){
+	    //Value of fk_product
+	    if(isset($_POST['product']) && $_POST['product']){
 	        $this->fk_product = $_POST['product'];
         }
 
@@ -391,16 +395,20 @@ class Spectacle extends CommonObject
 	    global $conf;
 
         $this->tms =dol_now();
-        if($_POST['category'] != '-1'){
+
+        // Value of category
+        if(isset($_POST['category']) && $_POST['category'] != '-1'){
             $this->category = $_POST['category'];
-            if($_POST['amount'] == '') {
+            //Value of amount (of the category)
+            if(isset($_POST['amount']) && $_POST['amount'] == '') {
                 $sql = "SELECT * FROM llx_modulespectacle_spectacle_category WHERE rowid ='".$this->category."';";
                 $res = $this->db->query($sql);
                 $this->amount = $this->db->fetch_object($res)->default_amount;
             }
         } else {
             $this->category = null;
-            if($_POST['amount'] == '') {
+            //Value of amount (global amount)
+            if(isset($_POST['amount']) && $_POST['amount'] == '') {
                 $this->amount = $conf->global->MODULESPECTACLE_DEFAULTAMOUNT;
             }
         }

@@ -119,9 +119,12 @@ class ActionsModuleSpectacle
     {
         global $langs;
 
+        //Card Product context
         if($parameters['currentcontext'] == "productcard")
+
+            //Add "New Show" button
             print '<div class="inline-block divButAction">';
-            print("<a class=\"butAction\" href='".dol_buildpath('/modulespectacle/spectacle_card.php',1)."?action=create&productid=".$object->id."'>".$langs->trans('NewShow')."</a>");
+            print("<a class=\"butAction\" href='".dol_buildpath('/modulespectacle/spectacle_card.php',1)."?action=create&product=".$object->id."'>".$langs->trans('NewShow')."</a>");
             print '</div>';
         return 0;
     }
