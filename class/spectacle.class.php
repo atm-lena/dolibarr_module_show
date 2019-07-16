@@ -93,6 +93,7 @@ class Spectacle extends CommonObject
 		'import_key' => array('type'=>'varchar(14)', 'label'=>'ImportId', 'enabled'=>1, 'visible'=>-2, 'position'=>1000, 'notnull'=>-1,),
 		'date' => array('type'=>'datetime', 'label'=>'Date', 'enabled'=>1, 'visible'=>1, 'position'=>32, 'notnull'=>-1, 'comment'=>"Date of show",),
         'category' => array('type'=>'integer', 'label'=>'Category', 'enabled'=>1, 'visible'=>2, 'position'=>33, 'notnull'=>-1),
+        'fk_product' => array('type'=>'integer', 'label'=>'ProductAssocied', 'enabled'=>1, 'visible'=>-2, 'position'=>512, 'notnull'=>-1),
 	);
 	public $rowid;
 	public $ref;
@@ -105,6 +106,7 @@ class Spectacle extends CommonObject
 	public $import_key;
 	public $date;
     public $category;
+    public $fk_product;
 	// END MODULEBUILDER PROPERTIES
 
 
@@ -197,6 +199,10 @@ class Spectacle extends CommonObject
             if($_POST['amount'] == '') {
                 $this->amount = $conf->global->MODULESPECTACLE_DEFAULTAMOUNT;
             }
+        }
+
+	    if($_POST['product']){
+	        $this->fk_product = $_POST['product'];
         }
 
 		return $this->createCommon($user, $notrigger);

@@ -115,6 +115,12 @@ class ActionsModuleSpectacle
 		}
 	}
 
+    function addMoreActionsButtons($parameters, $object, $action, $hookmanager)
+    {
+        if($parameters['currentcontext'] == "productcard")
+            print("<a class=\"butAction\" href='../custom/modulespectacle/spectacle_card.php?action=create&productid=".$object->id."'>Créer un spectacle</a>");
+        return 0;
+    }
 
 	/**
 	 * Overloading the doActions function : replacing the parent's function with the one below

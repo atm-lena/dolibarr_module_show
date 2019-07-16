@@ -195,6 +195,10 @@ if ($action == 'create')
     select_all_categories ($db);
     print '</td></tr>';
 
+    print '<tr id="field_product" style="visibility:hidden"><td class="titlefieldcreate"></td><td>';
+    print '<input id="product" name="product" value='.GETPOST('productid').'>';
+    print '</td></tr>';
+
 	// Other attributes
 	include DOL_DOCUMENT_ROOT . '/core/tpl/extrafields_add.tpl.php';
 
