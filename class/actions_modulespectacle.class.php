@@ -117,8 +117,10 @@ class ActionsModuleSpectacle
 
     function addMoreActionsButtons($parameters, $object, $action, $hookmanager)
     {
+        global $langs;
+
         if($parameters['currentcontext'] == "productcard")
-            print("<a class=\"butAction\" href='../custom/modulespectacle/spectacle_card.php?action=create&productid=".$object->id."'>Créer un spectacle</a>");
+            print("<a class=\"butAction\" href='../custom/modulespectacle/spectacle_card.php?action=create&productid=".$object->id."'>".$langs->trans('NewShow')."</a>");
         return 0;
     }
 
