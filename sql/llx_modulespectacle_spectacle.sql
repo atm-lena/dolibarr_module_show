@@ -30,6 +30,6 @@ CREATE TABLE llx_modulespectacle_spectacle(
 ) ENGINE=innodb;
 
 ALTER TABLE llx_modulespectacle_spectacle ADD COLUMN category integer;
-ALTER TABLE llx_modulespectacle_spectacle ADD FOREIGN KEY fk_llx_modulespectacle_spectacle_rowid(category) REFERENCES llx_modulespectacle_spectacle_category(rowid) ON DELETE CASCADE;
+ALTER TABLE llx_modulespectacle_spectacle ADD FOREIGN KEY fk_llx_modulespectacle_spectacle_category_rowid(category) REFERENCES llx_modulespectacle_spectacle_category(rowid) ON DELETE CASCADE;
 ALTER TABLE llx_modulespectacle_spectacle ADD COLUMN fk_product integer;
-ALTER TABLE llx_modulespectacle_spectacle ADD FOREIGN KEY fk_llx_modulespectacle_spectacle_product_rowid(fk_product) REFERENCES llx_product(rowid) ON DELETE CASCADE;
+ALTER TABLE llx_modulespectacle_spectacle ADD FOREIGN KEY fk_llx_modulespectacle_spectacle_product_rowid(fk_product) REFERENCES llx_product(rowid) ON DELETE SET NULL;
