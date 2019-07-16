@@ -120,7 +120,9 @@ class ActionsModuleSpectacle
         global $langs;
 
         if($parameters['currentcontext'] == "productcard")
-            print("<a class=\"butAction\" href='../custom/modulespectacle/spectacle_card.php?action=create&productid=".$object->id."'>".$langs->trans('NewShow')."</a>");
+            print '<div class="inline-block divButAction">';
+            print("<a class=\"butAction\" href='".dol_buildpath('/modulespectacle/spectacle_card.php',1)."?action=create&productid=".$object->id."'>".$langs->trans('NewShow')."</a>");
+            print '</div>';
         return 0;
     }
 
