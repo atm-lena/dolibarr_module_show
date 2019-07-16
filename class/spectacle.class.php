@@ -192,7 +192,7 @@ class Spectacle extends CommonObject
             $this->category = $_POST['category'];
             // Value of amount (of the category)
             if(isset($_POST['amount']) && $_POST['amount'] == '') {
-                $sql = "SELECT * FROM llx_modulespectacle_spectacle_category WHERE rowid ='".$this->category."';";
+                $sql = "SELECT * FROM ".MAIN_DB_PREFIX."modulespectacle_spectacle_category WHERE rowid ='".$this->category."';";
                 $res = $this->db->query($sql);
                 $this->amount = $this->db->fetch_object($res)->default_amount;
             }
@@ -401,7 +401,7 @@ class Spectacle extends CommonObject
             $this->category = $_POST['category'];
             //Value of amount (of the category)
             if(isset($_POST['amount']) && $_POST['amount'] == '') {
-                $sql = "SELECT * FROM llx_modulespectacle_spectacle_category WHERE rowid ='".$this->category."';";
+                $sql = "SELECT * FROM ".MAIN_DB_PREFIX."modulespectacle_spectacle_category WHERE rowid ='".$this->category."';";
                 $res = $this->db->query($sql);
                 $this->amount = $this->db->fetch_object($res)->default_amount;
             }

@@ -13,8 +13,4 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-INSERT INTO llx_modulespectacle_myobject VALUES (
-	1, 1, 'mydata'
-);
-
 INSERT INTO llx_modulespectacle_spectacle_category (label, default_amount) VALUES ('Thêâtre', 20), ('Formule 1', 40), ('Concert', 10);

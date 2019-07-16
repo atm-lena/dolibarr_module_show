@@ -20,7 +20,7 @@
 # Module label 'ModuleModuleSpectacleName'
 ModuleModuleSpectacleName = ModuleSpectacle
 # Module description 'ModuleModuleSpectacleDesc'
-ModuleModuleSpectacleDesc = ModuleSpectacle description
+ModuleModuleSpectacleDesc = Allows show management and creating shows from a product
 
 #
 #Boxe
@@ -69,6 +69,14 @@ ModuleSpectacleAboutPage = ModuleSpectacle about page
 # Sample page
 #
 MyPageName = My page name
+
+#
+#Pop-Up
+#
+DeleteShow = Delete a show
+CloneShow = Clone a show
+ConfirmDeleteShow = Are you sure you want to delete this show?
+ConfirmCloneShow = Are you sure you want to clone this show?
 
 #
 # Sample widget

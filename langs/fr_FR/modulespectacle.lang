@@ -20,7 +20,7 @@
 # Module label 'ModuleModuleSpectacleName'
 ModuleModuleSpectacleName = ModuleSpectacle
 # Module description 'ModuleModuleSpectacleDesc'
-ModuleModuleSpectacleDesc = Description du module de spectacles
+ModuleModuleSpectacleDesc = Permet une gestion de spectacles et la création de spectacles depuis une produit
 
 #
 #Boxe
@@ -63,6 +63,15 @@ ModuleSpectacleAboutPage = Page à propos de ModuleSpectacle
 # Page d'exemple
 #
 MyPageName = Nom de ma page
+
+#
+#Fenêtres Pop-Up
+#
+DeleteShow = Supprimer un spectacle
+CloneShow = Cloner un spectacle
+ConfirmDeleteShow = Etes-vous sûr de vouloir supprimer ce spectacle ?
+ConfirmCloneShow = Etes-vous sûr de vouloir cloner ce spectacle ?
+
 
 #
 # Box d'exemple
