@@ -192,7 +192,7 @@ if ($action == 'create')
 
     // Category attribute
     print '<tr id="field_category"><td class="titlefieldcreate">Catégorie</td><td>';
-    select_all_categories ($db);
+    select_all_categories ($object->category);
     print '</td></tr>';
 
     // fk_product attribute
@@ -234,7 +234,7 @@ if (($id || $ref) && $action == 'edit')
 
     // Category attributes
     print '<tr id="field_category"><td class="titlefieldcreate">Catégorie</td><td>';
-    select_all_categories ($db);
+    select_all_categories ($object->category);
     print '</td></tr>';
 
 	// Other attributes
@@ -481,8 +481,11 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 	 */
 }
 
-function select_all_categories ($db)
+function select_all_categories ($category)
 {
+
+    global $db;
+
     $sql = "SELECT c.rowid, c.label";
     $sql .= " FROM " . MAIN_DB_PREFIX . "modulespectacle_spectacle_category as c";
     $sql .= " ORDER BY c.label";
@@ -507,7 +510,11 @@ function select_all_categories ($db)
         print '<option value="-1">&nbsp;</option>';
         foreach($categories as $key => $value)
                 {
-                    print'<option value="'.$value['id'].'">'.$value['label'].'</option>';
+                    if($value['id'] == $category){
+                        print'<option selected="selected" value="' . $value['id'] . '">' . $value['label'] . '</option>';
+                    } else {
+                        print'<option value="' . $value['id'] . '">' . $value['label'] . '</option>';
+                    }
 
                 }
     }
