@@ -1635,6 +1635,11 @@ class pdf_azur_mention extends ModelePDFPropales
 			$pdf->MultiCell($widthrecbox, 4, $carac_client, 0, 'L');
 		}
 
+		$pdf->setXY($this->marge_gauche,$posy+33);
+        $pdf->SetFont('','', $default_font_size-3);
+		$pdf->setTextColor(200,0,0);
+		$pdf->MultiCell(0,2,$outputlangs->convToOutputCharset($object->array_options ['options_mention']), 0, "L");
+
 		$pdf->SetTextColor(0,0,0);
 		return $top_shift;
 	}
