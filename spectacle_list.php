@@ -501,8 +501,10 @@ while ($i < min($num, $limit))
 			if($key == 'category'){
                 $sql = "SELECT s.label FROM llx_modulespectacle_spectacle_category as s WHERE rowid=".$obj->category.";";
                 $res = $db->query($sql);
-                $category = $db->fetch_object($res);
-                print ($category->label);
+                if($res) {
+                    $category = $db->fetch_object($res);
+                    print ($category->label);
+                }
             } else {
                 print $object->showOutputField($val, $key, $obj->$key, '');
             }
