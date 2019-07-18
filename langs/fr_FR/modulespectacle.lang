@@ -72,6 +72,12 @@ CloneShow = Cloner un spectacle
 ConfirmDeleteShow = Etes-vous sûr de vouloir supprimer ce spectacle ?
 ConfirmCloneShow = Etes-vous sûr de vouloir cloner ce spectacle ?
 
+DeleteCategory = Supprimer une catégorie
+CloneCategory = Cloner une catégorie
+ConfirmDeleteCategory = Etes-vous sûr de vouloir supprimer cette catégorie ?
+ConfirmCloneCategory = Etes-vous sûr de vouloir cloner cette catégorie ?
+
+
 
 #
 # Box d'exemple
