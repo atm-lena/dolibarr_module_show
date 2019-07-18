@@ -283,7 +283,7 @@ class modModuleSpectacle extends DolibarrModules
 		$this->menu[$r++]=array(
                 				'fk_menu'=>'fk_mainmenu=modulespectacle',	    // '' if this is a top menu. For left menu, use 'fk_mainmenu=xxx' or 'fk_mainmenu=xxx,fk_leftmenu=yyy' where xxx is mainmenucode and yyy is a leftmenucode
 								'type'=>'left',			                // This is a Left menu entry
-								'titre'=> 'Spectacle',
+								'titre'=> $langs->trans('ShowM'),
 								'mainmenu'=>'modulespectacle',
 								'leftmenu'=>'modulespectacle_spectacle',
 								'langs'=>'modulespectacle@modulespectacle',	        // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
@@ -321,7 +321,7 @@ class modModuleSpectacle extends DolibarrModules
         $this->menu[$r++]=array(
                                 'fk_menu'=>'fk_mainmenu=modulespectacle',	    // '' if this is a top menu. For left menu, use 'fk_mainmenu=xxx' or 'fk_mainmenu=xxx,fk_leftmenu=yyy' where xxx is mainmenucode and yyy is a leftmenucode
                                 'type'=>'left',			                // This is a Left menu entry
-                                'titre'=> 'Catégorie',
+                                'titre'=> $langs->trans('Category'),
                                 'mainmenu'=>'modulespectacle',
                                 'leftmenu'=>'modulespectacle_category',
                                 'langs'=>'modulespectacle@modulespectacle',	        // Lang file to use (without .lang) by module. File must be in langs/code_CODE/ directory.
