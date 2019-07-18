@@ -499,7 +499,7 @@ while ($i < min($num, $limit))
 			if ($cssforfield || $val['css']) print '"';
 			print '>';
 			if($key == 'category'){
-                $sql = "SELECT s.label FROM llx_modulespectacle_spectacle_category as s WHERE rowid=".$obj->category.";";
+                $sql = "SELECT s.label FROM ".MAIN_DB_PREFIX."modulespectacle_spectacle_category as s WHERE rowid=".$obj->category.";";
                 $res = $db->query($sql);
                 if($res) {
                     $category = $db->fetch_object($res);

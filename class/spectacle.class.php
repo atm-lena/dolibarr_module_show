@@ -328,10 +328,11 @@ class Spectacle extends CommonObject
 		$sql .= ' t.rowid';
 		// TODO Get all fields
 		$sql .= ' FROM ' . MAIN_DB_PREFIX . $this->table_element. ' as t';
-		$sql .= ' WHERE t.entity = '.$conf->entity;
+		$sql .= ' WHERE 1=1';
 		// Manage filter
 		$sqlwhere = array();
 		if (count($filter) > 0) {
+
 			foreach ($filter as $key => $value) {
 				if ($key=='t.rowid') {
 					$sqlwhere[] = $key . '='. $value;
@@ -357,9 +358,10 @@ class Spectacle extends CommonObject
 		if (!empty($limit)) {
 			$sql .=  ' ' . $this->db->plimit($limit, $offset);
 		}
-
+        print_r($sql);
 		$resql = $this->db->query($sql);
 		if ($resql) {
+
 			$num = $this->db->num_rows($resql);
 
 			while ($obj = $this->db->fetch_object($resql))

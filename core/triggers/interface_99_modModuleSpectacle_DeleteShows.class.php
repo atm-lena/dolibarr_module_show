@@ -34,6 +34,8 @@
 
 require_once DOL_DOCUMENT_ROOT.'/core/triggers/dolibarrtriggers.class.php';
 
+dol_include_once('/modulespectacle/class/spectacle.class.php');
+
 
 /**
  *  Class of triggers for ModuleSpectacle module
@@ -97,6 +99,7 @@ class InterfaceDeleteShows extends DolibarrTriggers
 	 */
 	public function runTrigger($action, $object, User $user, Translate $langs, Conf $conf)
 	{
+	    global $db;
 
         if (empty($conf->modulespectacle->enabled)) return 0;     // Module not active, we do nothing
 
@@ -106,8 +109,13 @@ class InterfaceDeleteShows extends DolibarrTriggers
         switch ($action) {
 		    case 'PRODUCT_DELETE':
 		        //Delete all shows created from the product
-		        $sql = "DELETE FROM ".MAIN_DB_PREFIX."modulespectacle_spectacle WHERE fk_product=".$object->id.";";
-                $res = $this->db->query($sql);
+                $spectacle=new Spectacle($db);
+                $lines = $spectacle->fetchAll('ASC', '', 0, 0, array('customsql'=>'fk_product='.$object->id.''), 'AND');
+                foreach($lines as $line){
+                    $line->delete($user);
+                }
+//		        $sql = "DELETE FROM ".MAIN_DB_PREFIX."modulespectacle_spectacle WHERE fk_product=".$object->id.";";
+//                $res = $this->db->query($sql);
 				break;
 			default:
 		        dol_syslog("Trigger '".$this->name."' for action '$action' launched by ".__FILE__.". id=".$object->id);
