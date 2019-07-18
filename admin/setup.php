@@ -54,11 +54,10 @@ $action = GETPOST('action', 'alpha');
 $backtopage = GETPOST('backtopage', 'alpha');
 
 $arrayofparameters=array(
-	'MODULESPECTACLE_MYPARAM1'=>array('css'=>'minwidth200','enabled'=>1),
-	'MODULESPECTACLE_MYPARAM2'=>array('css'=>'minwidth500','enabled'=>1)
+	'MODULESPECTACLE_DEFAULTAMOUNT'=>array('css'=>'minwidth200','enabled'=>1)
 );
 
-
+$conf->global->MODULESPECTACLE_DEFAULTAMOUNT;
 /*
  * Actions
  */
