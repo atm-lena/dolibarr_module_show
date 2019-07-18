@@ -182,6 +182,149 @@ if ($action == 'create')
 	print '</form>';
 }
 
+// Part to edit record
+if (($id || $ref) && $action == 'edit')
+{
+    print load_fiche_titre($langs->trans("ShowM"));
+
+    print '<form method="POST" action="'.$_SERVER["PHP_SELF"].'">';
+    print '<input type="hidden" name="token" value="'.$_SESSION['newtoken'].'">';
+    print '<input type="hidden" name="action" value="update">';
+    print '<input type="hidden" name="backtopage" value="'.$backtopage.'">';
+    print '<input type="hidden" name="id" value="'.$object->id.'">';
+
+    dol_fiche_head();
+
+    print '<table class="border centpercent">'."\n";
+
+    // Common attributes
+    include DOL_DOCUMENT_ROOT . '/core/tpl/commonfields_edit.tpl.php';
+
+    // Other attributes
+    include DOL_DOCUMENT_ROOT . '/core/tpl/extrafields_edit.tpl.php';
+
+    print '</table>';
+
+    dol_fiche_end();
+
+    print '<div class="center"><input type="submit" class="button" name="save" value="'.$langs->trans("Save").'">';
+    print ' &nbsp; <input type="submit" class="button" name="cancel" value="'.$langs->trans("Cancel").'">';
+    print '</div>';
+
+    print '</form>';
+
+}
+
+// Part to show record
+if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'create')))
+{
+    $res = $object->fetch_optionals();
+
+//    $head = categoryPrepareHead($object);
+//    dol_fiche_head($head, 'card', $langs->trans("ShowM"), -1, 'spectacle@modulespectacle');
+
+    $formconfirm = '';
+
+    // Confirmation to delete
+    if ($action == 'delete')
+    {
+        $formconfirm = $form->formconfirm($_SERVER["PHP_SELF"] . '?id=' . $object->id, $langs->trans('DeleteCategory'), $langs->trans('ConfirmDeleteCategory'), 'confirm_delete', '', 0, 1);
+    }
+
+    // Clone confirmation
+    if ($action == 'clone') {
+        // Create an array for form
+        $formquestion = array();
+        $formconfirm = $form->formconfirm($_SERVER["PHP_SELF"] . '?id=' . $object->id, $langs->trans('CloneCategory'), $langs->trans('ConfirmCloneCategory  ', $object->label), 'confirm_clone', $formquestion, 'yes', 1);
+    }
+
+
+    // Call Hook formConfirm
+    $parameters = array('lineid' => $lineid);
+    $reshook = $hookmanager->executeHooks('formConfirm', $parameters, $object, $action); // Note that $action and $object may have been modified by hook
+    if (empty($reshook)) $formconfirm.=$hookmanager->resPrint;
+    elseif ($reshook > 0) $formconfirm=$hookmanager->resPrint;
+
+    // Print form confirm
+    print $formconfirm;
+
+
+    // Object card
+    // ------------------------------------------------------------
+    $linkback = '<a href="' .dol_buildpath('/modulespectacle/category_list.php',1) . '?restore_lastsearch_values=1' . (! empty($socid) ? '&socid=' . $socid : '') . '">' . $langs->trans("BackToList") . '</a>';
+
+    $morehtmlref='<div class="refidno">';
+
+    $morehtmlref.='</div>';
+
+
+    dol_banner_tab($object, 'label', $linkback, 1, 'id', 'label', $morehtmlref);
+
+
+    print '<div class="fichecenter">';
+    print '<div class="fichehalfleft">';
+    print '<div class="underbanner clearboth"></div>';
+    print '<table class="border centpercent">'."\n";
+
+    // Common attributes
+    //$keyforbreak='fieldkeytoswithonsecondcolumn';
+    include DOL_DOCUMENT_ROOT . '/core/tpl/commonfields_view.tpl.php';
+
+    // Other attributes
+    include DOL_DOCUMENT_ROOT . '/core/tpl/extrafields_view.tpl.php';
+
+    print '</table>';
+    print '</div>';
+    print '</div>';
+
+    print '<div class="clearboth"></div><br>';
+
+    dol_fiche_end();
+
+
+    // Buttons for actions
+    if ($action != 'presend' && $action != 'editline') {
+        print '<div class="tabsAction">'."\n";
+        $parameters=array();
+        $reshook=$hookmanager->executeHooks('addMoreActionsButtons',$parameters,$object,$action);    // Note that $action and $object may have been modified by hook
+        if ($reshook < 0) setEventMessages($hookmanager->error, $hookmanager->errors, 'errors');
+
+        if (empty($reshook))
+        {
+//            // Send
+//            print '<a class="butAction" href="' . $_SERVER["PHP_SELF"] . '?id=' . $object->id . '&action=presend&mode=init#formmailbeforetitle">' . $langs->trans('SendMail') . '</a>'."\n";
+
+            // Modify
+            if ($user->rights->modulespectacle->write)
+            {
+                print '<a class="butAction" href="'.$_SERVER["PHP_SELF"].'?id='.$object->id.'&amp;action=edit">'.$langs->trans("Modify").'</a>'."\n";
+            }
+            else
+            {
+                print '<a class="butActionRefused" href="#" title="'.dol_escape_htmltag($langs->trans("NotEnoughPermissions")).'">'.$langs->trans('Modify').'</a>'."\n";
+            }
+
+            // Clone
+//            if ($user->rights->modulespectacle->write)
+//            {
+                print '<div class="inline-block divButAction"><a class="butAction" href="' . $_SERVER['PHP_SELF'] . '?id=' . $object->id . '&amp;socid=' . $object->socid . '&amp;action=clone&amp;object=order">' . $langs->trans("ToClone") . '</a></div>';
+//            }
+
+
+            if ($user->rights->modulespectacle->delete)
+            {
+                print '<a class="butActionDelete" href="'.$_SERVER["PHP_SELF"].'?id='.$object->id.'&amp;action=delete">'.$langs->trans('Delete').'</a>'."\n";
+            }
+            else
+            {
+                print '<a class="butActionRefused" href="#" title="'.dol_escape_htmltag($langs->trans("NotEnoughPermissions")).'">'.$langs->trans('Delete').'</a>'."\n";
+            }
+        }
+        print '</div>'."\n";
+    }
+
+}
+
 // End of page
 llxFooter();
 $db->close();

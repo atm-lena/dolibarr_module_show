@@ -143,6 +143,71 @@ class Category extends CommonObject
 	}
 
     /**
+     * Clone and object into another one
+     *
+     * @param  	User 	$user      	User that creates
+     * @param  	int 	$fromid     Id of object to clone
+     * @return 	mixed 				New object created, <0 if KO
+     */
+    public function createFromClone(User $user, $fromid)
+    {
+        global $langs, $hookmanager, $extrafields;
+        $error = 0;
+
+        dol_syslog(__METHOD__, LOG_DEBUG);
+
+        $object = new self($this->db);
+
+        $this->db->begin();
+
+        // Load source object
+        $object->fetchCommon($fromid);
+        // Reset some properties
+        unset($object->id);
+        unset($object->fk_user_creat);
+        unset($object->import_key);
+
+        // Clear fields
+        $object->ref = "copy_of_".$object->ref;
+        $object->title = $langs->trans("CopyOf")." ".$object->title;
+        // ...
+        // Clear extrafields that are unique
+        if (is_array($object->array_options) && count($object->array_options) > 0)
+        {
+            $extrafields->fetch_name_optionals_label($this->element);
+            foreach($object->array_options as $key => $option)
+            {
+                $shortkey = preg_replace('/options_/', '', $key);
+                if (! empty($extrafields->attributes[$this->element]['unique'][$shortkey]))
+                {
+                    //var_dump($key); var_dump($clonedObj->array_options[$key]); exit;
+                    unset($object->array_options[$key]);
+                }
+            }
+        }
+
+        // Create clone
+        $object->context['createfromclone'] = 'createfromclone';
+        $result = $object->createCommon($user);
+        if ($result < 0) {
+            $error++;
+            $this->error = $object->error;
+            $this->errors = $object->errors;
+        }
+
+        unset($object->context['createfromclone']);
+
+        // End
+        if (!$error) {
+            $this->db->commit();
+            return $object;
+        } else {
+            $this->db->rollback();
+            return -1;
+        }
+    }
+
+    /**
      * Delete object in database
      *
      * @param User $user       User that deletes
@@ -234,6 +299,272 @@ class Category extends CommonObject
 
             return -1;
         }
+    }
+
+    /**
+     * Update object into database
+     *
+     * @param  User $user      User that modifies
+     * @param  bool $notrigger false=launch triggers after, true=disable triggers
+     * @return int             <0 if KO, >0 if OK
+     */
+    public function update(User $user, $notrigger = false)
+    {
+        global $conf;
+
+        $this->tms =dol_now();
+
+        // Value of category
+        if(isset($_POST['category']) && $_POST['category'] != '-1'){
+            $this->category = $_POST['category'];
+            //Value of amount (of the category)
+            if(isset($_POST['amount']) && $_POST['amount'] == '') {
+                $sql = "SELECT * FROM ".MAIN_DB_PREFIX."modulespectacle_spectacle_category WHERE rowid ='".$this->category."';";
+                $res = $this->db->query($sql);
+                $this->amount = $this->db->fetch_object($res)->default_amount;
+            }
+        } else {
+            $this->category = null;
+            //Value of amount (global amount)
+            if(isset($_POST['amount']) && $_POST['amount'] == '') {
+                $this->amount = $conf->global->MODULESPECTACLE_DEFAULTAMOUNT;
+            }
+        }
+        return $this->updateCommon($user, $notrigger);
+    }
+
+    /**
+     *  Return a link to the object card (with optionaly the picto)
+     *
+     *	@param	int		$withpicto					Include picto in link (0=No picto, 1=Include picto into link, 2=Only picto)
+     *	@param	string	$option						On what the link point to ('nolink', ...)
+     *  @param	int  	$notooltip					1=Disable tooltip
+     *  @param  string  $morecss            		Add more css on link
+     *  @param  int     $save_lastsearch_value    	-1=Auto, 0=No save of lastsearch_values when clicking, 1=Save lastsearch_values whenclicking
+     *	@return	string								String with URL
+     */
+    function getNomUrl($withpicto=0, $option='', $notooltip=0, $morecss='', $save_lastsearch_value=-1)
+    {
+        global $db, $conf, $langs, $hookmanager;
+        global $dolibarr_main_authentication, $dolibarr_main_demo;
+        global $menumanager;
+
+        if (! empty($conf->dol_no_mouse_hover)) $notooltip=1;   // Force disable tooltips
+
+        $result = '';
+
+        $label = '<u>' . $langs->trans("ShowM") . '</u>';
+        $label.= '<br>';
+        $label.= '<b>' . $langs->trans('Ref') . ':</b> ' . $this->ref;
+
+        $url = dol_buildpath('/modulespectacle/spectacle_card.php',1).'?id='.$this->id;
+
+        if ($option != 'nolink')
+        {
+            // Add param to save lastsearch_values or not
+            $add_save_lastsearch_values=($save_lastsearch_value == 1 ? 1 : 0);
+            if ($save_lastsearch_value == -1 && preg_match('/list\.php/',$_SERVER["PHP_SELF"])) $add_save_lastsearch_values=1;
+            if ($add_save_lastsearch_values) $url.='&save_lastsearch_values=1';
+        }
+
+        $linkclose='';
+        if (empty($notooltip))
+        {
+            if (! empty($conf->global->MAIN_OPTIMIZEFORTEXTBROWSER))
+            {
+                $label=$langs->trans("Showspectacle");
+                $linkclose.=' alt="'.dol_escape_htmltag($label, 1).'"';
+            }
+            $linkclose.=' title="'.dol_escape_htmltag($label, 1).'"';
+            $linkclose.=' class="classfortooltip'.($morecss?' '.$morecss:'').'"';
+
+            /*
+             $hookmanager->initHooks(array('spectacledao'));
+             $parameters=array('id'=>$this->id);
+             $reshook=$hookmanager->executeHooks('getnomurltooltip',$parameters,$this,$action);    // Note that $action and $object may have been modified by some hooks
+             if ($reshook > 0) $linkclose = $hookmanager->resPrint;
+             */
+        }
+        else $linkclose = ($morecss?' class="'.$morecss.'"':'');
+
+        $linkstart = '<a href="'.$url.'"';
+        $linkstart.=$linkclose.'>';
+        $linkend='</a>';
+
+        $result .= $linkstart;
+        if ($withpicto) $result.=img_object(($notooltip?'':$label), ($this->picto?$this->picto:'generic'), ($notooltip?(($withpicto != 2) ? 'class="paddingright"' : ''):'class="'.(($withpicto != 2) ? 'paddingright ' : '').'classfortooltip"'), 0, 0, $notooltip?0:1);
+        if ($withpicto != 2) $result.= $this->ref;
+        $result .= $linkend;
+        //if ($withpicto != 2) $result.=(($addlabel && $this->label) ? $sep . dol_trunc($this->label, ($addlabel > 1 ? $addlabel : 0)) : '');
+
+        global $action,$hookmanager;
+        $hookmanager->initHooks(array('spectacledao'));
+        $parameters=array('id'=>$this->id, 'getnomurl'=>$result);
+        $reshook=$hookmanager->executeHooks('getNomUrl',$parameters,$this,$action);    // Note that $action and $object may have been modified by some hooks
+        if ($reshook > 0) $result = $hookmanager->resPrint;
+        else $result .= $hookmanager->resPrint;
+
+        return $result;
+    }
+
+    /**
+     *  Return label of the status
+     *
+     *  @param  int		$mode          0=long label, 1=short label, 2=Picto + short label, 3=Picto, 4=Picto + long label, 5=Short label + Picto, 6=Long label + Picto
+     *  @return	string 			       Label of status
+     */
+    public function getLibStatut($mode=0)
+    {
+        return $this->LibStatut($this->status, $mode);
+    }
+
+    // phpcs:disable PEAR.NamingConventions.ValidFunctionName.ScopeNotCamelCaps
+    /**
+     *  Return the status
+     *
+     *  @param	int		$status        Id status
+     *  @param  int		$mode          0=long label, 1=short label, 2=Picto + short label, 3=Picto, 4=Picto + long label, 5=Short label + Picto, 6=Long label + Picto
+     *  @return string 			       Label of status
+     */
+    public function LibStatut($status, $mode=0)
+    {
+        // phpcs:enable
+        if (empty($this->labelstatus))
+        {
+            global $langs;
+            //$langs->load("modulespectacle");
+            $this->labelstatus[1] = $langs->trans('Enabled');
+            $this->labelstatus[0] = $langs->trans('Disabled');
+        }
+
+        if ($mode == 0)
+        {
+            return $this->labelstatus[$status];
+        }
+        elseif ($mode == 1)
+        {
+            return $this->labelstatus[$status];
+        }
+        elseif ($mode == 2)
+        {
+            if ($status == 1) return img_picto($this->labelstatus[$status],'statut4', '', false, 0, 0, '', 'valignmiddle').' '.$this->labelstatus[$status];
+            elseif ($status == 0) return img_picto($this->labelstatus[$status],'statut5', '', false, 0, 0, '', 'valignmiddle').' '.$this->labelstatus[$status];
+        }
+        elseif ($mode == 3)
+        {
+            if ($status == 1) return img_picto($this->labelstatus[$status],'statut4', '', false, 0, 0, '', 'valignmiddle');
+            elseif ($status == 0) return img_picto($this->labelstatus[$status],'statut5', '', false, 0, 0, '', 'valignmiddle');
+        }
+        elseif ($mode == 4)
+        {
+            if ($status == 1) return img_picto($this->labelstatus[$status],'statut4', '', false, 0, 0, '', 'valignmiddle').' '.$this->labelstatus[$status];
+            elseif ($status == 0) return img_picto($this->labelstatus[$status],'statut5', '', false, 0, 0, '', 'valignmiddle').' '.$this->labelstatus[$status];
+        }
+        elseif ($mode == 5)
+        {
+            if ($status == 1) return $this->labelstatus[$status].' '.img_picto($this->labelstatus[$status],'statut4', '', false, 0, 0, '', 'valignmiddle');
+            elseif ($status == 0) return $this->labelstatus[$status].' '.img_picto($this->labelstatus[$status],'statut5', '', false, 0, 0, '', 'valignmiddle');
+        }
+        elseif ($mode == 6)
+        {
+            if ($status == 1) return $this->labelstatus[$status].' '.img_picto($this->labelstatus[$status],'statut4', '', false, 0, 0, '', 'valignmiddle');
+            elseif ($status == 0) return $this->labelstatus[$status].' '.img_picto($this->labelstatus[$status],'statut5', '', false, 0, 0, '', 'valignmiddle');
+        }
+    }
+
+    /**
+     *	Charge les informations d'ordre info dans l'objet commande
+     *
+     *	@param  int		$id       Id of order
+     *	@return	void
+     */
+    public function info($id)
+    {
+        $sql = 'SELECT rowid, date_creation as datec, tms as datem,';
+        $sql.= ' fk_user_creat, fk_user_modif';
+        $sql.= ' FROM '.MAIN_DB_PREFIX.$this->table_element.' as t';
+        $sql.= ' WHERE t.rowid = '.$id;
+        $result=$this->db->query($sql);
+        if ($result)
+        {
+            if ($this->db->num_rows($result))
+            {
+                $obj = $this->db->fetch_object($result);
+                $this->id = $obj->rowid;
+                if ($obj->fk_user_author)
+                {
+                    $cuser = new User($this->db);
+                    $cuser->fetch($obj->fk_user_author);
+                    $this->user_creation   = $cuser;
+                }
+
+                if ($obj->fk_user_valid)
+                {
+                    $vuser = new User($this->db);
+                    $vuser->fetch($obj->fk_user_valid);
+                    $this->user_validation = $vuser;
+                }
+
+                if ($obj->fk_user_cloture)
+                {
+                    $cluser = new User($this->db);
+                    $cluser->fetch($obj->fk_user_cloture);
+                    $this->user_cloture   = $cluser;
+                }
+
+                $this->date_creation     = $this->db->jdate($obj->datec);
+                $this->date_modification = $this->db->jdate($obj->datem);
+                $this->date_validation   = $this->db->jdate($obj->datev);
+            }
+
+            $this->db->free($result);
+        }
+        else
+        {
+            dol_print_error($this->db);
+        }
+    }
+
+    /**
+     * Initialise object with example values
+     * Id must be 0 if object instance is a specimen
+     *
+     * @return void
+     */
+    public function initAsSpecimen()
+    {
+        $this->initAsSpecimenCommon();
+    }
+
+
+    /**
+     * Action executed by scheduler
+     * CAN BE A CRON TASK. In such a case, paramerts come from the schedule job setup field 'Parameters'
+     *
+     * @return	int			0 if OK, <>0 if KO (this function is used also by cron so only 0 is OK)
+     */
+    //public function doScheduledJob($param1, $param2, ...)
+    public function doScheduledJob()
+    {
+        global $conf, $langs;
+
+        //$conf->global->SYSLOG_FILE = 'DOL_DATA_ROOT/dolibarr_mydedicatedlofile.log';
+
+        $error = 0;
+        $this->output = '';
+        $this->error='';
+
+        dol_syslog(__METHOD__, LOG_DEBUG);
+
+        $now = dol_now();
+
+        $this->db->begin();
+
+        // ...
+
+        $this->db->commit();
+
+        return $error;
     }
 
 }

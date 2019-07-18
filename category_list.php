@@ -471,7 +471,12 @@ while ($i < min($num, $limit))
         if (in_array($val['type'], array('timestamp'))) $cssforfield.=($cssforfield?' ':'').'nowrap';
         elseif ($key == 'ref') $cssforfield.=($cssforfield?' ':'').'nowrap';
 
-        if (! empty($arrayfields['t.'.$key]['checked']))
+        if($key == 'label'){
+            print '<td class="nowrap">';
+            print '<a class="classfortooltip" href="category_card.php?id='.$obj->rowid.'" title="<u>Category</u><br><b>Label:</b>'.$val.'">'.$obj->label.'</a>';
+            print '</td>';
+        }
+        elseif (! empty($arrayfields['t.'.$key]['checked']))
         {
             print '<td';
             if ($cssforfield || $val['css']) print ' class="';
