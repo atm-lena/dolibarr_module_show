@@ -192,7 +192,7 @@ if ($action == 'create')
 
     // Category attribute
     print '<tr id="field_category"><td class="titlefieldcreate">Catégorie</td><td>';
-    select_all_categories ($object->category);
+    display_select_all_categories ($object->category);
     print '</td></tr>';
 
     // fk_product attribute
@@ -234,7 +234,7 @@ if (($id || $ref) && $action == 'edit')
 
     // Category attributes
     print '<tr id="field_category"><td class="titlefieldcreate">Catégorie</td><td>';
-    select_all_categories ($object->category);
+    display_select_all_categories ($object->category);
     print '</td></tr>';
 
 	// Other attributes
@@ -359,7 +359,19 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 	//$keyforbreak='fieldkeytoswithonsecondcolumn';
 	include DOL_DOCUMENT_ROOT . '/core/tpl/commonfields_view.tpl.php';
 
-	// Other attributes
+    //fk_product attribute
+    if($object->fk_product) {
+        $product = select_product($object->fk_product);
+        print '<tr>';
+        print '<td class ="titlefield">Produit associé</td>';
+        print '<td>';
+        print '<a href="' . dol_buildpath('/product/card.php', 1) . '?id=' . $product->rowid . '">';
+        print $product->ref;
+        print '</a></td>';
+        print '</tr>';
+    }
+
+    // Other attributes
 	include DOL_DOCUMENT_ROOT . '/core/tpl/extrafields_view.tpl.php';
 
 	print '</table>';
@@ -426,62 +438,40 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
 	}
 
 
-	// Select mail models is same action as presend
-	if (GETPOST('modelselected')) {
-		$action = 'presend';
-	}
+//	// Select mail models is same action as presend
+//	if (GETPOST('modelselected')) {
+//		$action = 'presend';
+//	}
+//
+//	if ($action != 'presend')
+//	{
+//	    print '<div class="fichecenter"><div class="fichehalfleft">';
+//	    print '<a name="builddoc"></a>'; // ancre
+//
+//	    // Show links to link elements
+//	    $linktoelem = $form->showLinkToObjectBlock($object, null, array('spectacle'));
+//	    $somethingshown = $form->showLinkedObjectBlock($object, $linktoelem);
+//
+//
+//	    print '</div><div class="fichehalfright"><div class="ficheaddleft">';
+//
+//	    $MAXEVENT = 10;
+//
+//	    $morehtmlright = '<a href="'.dol_buildpath('/modulespectacle/spectacle_info.php', 1).'?id='.$object->id.'">';
+//	    $morehtmlright.= $langs->trans("SeeAll");
+//	    $morehtmlright.= '</a>';
+//
+//	    // List of actions on element
+//	    include_once DOL_DOCUMENT_ROOT . '/core/class/html.formactions.class.php';
+//	    $formactions = new FormActions($db);
+//	    $somethingshown = $formactions->showactions($object, 'spectacle', $socid, 1, '', $MAXEVENT, '', $morehtmlright);
+//
+//	    print '</div></div></div>';
+//	}
 
-	if ($action != 'presend')
-	{
-	    print '<div class="fichecenter"><div class="fichehalfleft">';
-	    print '<a name="builddoc"></a>'; // ancre
-
-	    // Documents
-	    /*$objref = dol_sanitizeFileName($object->ref);
-	    $relativepath = $comref . '/' . $comref . '.pdf';
-	    $filedir = $conf->modulespectacle->dir_output . '/' . $objref;
-	    $urlsource = $_SERVER["PHP_SELF"] . "?id=" . $object->id;
-	    $genallowed = $user->rights->modulespectacle->read;	// If you can read, you can build the PDF to read content
-	    $delallowed = $user->rights->modulespectacle->create;	// If you can create/edit, you can remove a file on card
-	    print $formfile->showdocuments('modulespectacle', $objref, $filedir, $urlsource, $genallowed, $delallowed, $object->modelpdf, 1, 0, 0, 28, 0, '', '', '', $soc->default_lang);
-		*/
-
-	    // Show links to link elements
-	    $linktoelem = $form->showLinkToObjectBlock($object, null, array('spectacle'));
-	    $somethingshown = $form->showLinkedObjectBlock($object, $linktoelem);
-
-
-	    print '</div><div class="fichehalfright"><div class="ficheaddleft">';
-
-	    $MAXEVENT = 10;
-
-	    $morehtmlright = '<a href="'.dol_buildpath('/modulespectacle/spectacle_info.php', 1).'?id='.$object->id.'">';
-	    $morehtmlright.= $langs->trans("SeeAll");
-	    $morehtmlright.= '</a>';
-
-	    // List of actions on element
-	    include_once DOL_DOCUMENT_ROOT . '/core/class/html.formactions.class.php';
-	    $formactions = new FormActions($db);
-	    $somethingshown = $formactions->showactions($object, 'spectacle', $socid, 1, '', $MAXEVENT, '', $morehtmlright);
-
-	    print '</div></div></div>';
-	}
-
-	//Select mail models is same action as presend
-	/*
-	 if (GETPOST('modelselected')) $action = 'presend';
-
-	 // Presend form
-	 $modelmail='inventory';
-	 $defaulttopic='InformationMessage';
-	 $diroutput = $conf->product->dir_output.'/inventory';
-	 $trackid = 'stockinv'.$object->id;
-
-	 include DOL_DOCUMENT_ROOT.'/core/tpl/card_presend.tpl.php';
-	 */
 }
 
-function select_all_categories ($category)
+function display_select_all_categories ($category)
 {
 
     global $db;
@@ -522,6 +512,27 @@ function select_all_categories ($category)
         print '<a href="category_card.php?action=create"> Créer une catégorie</a>';
         print "\n";
 
+}
+
+function select_product ($id_product){
+
+    global $db;
+
+    $sql = "SELECT * FROM ".MAIN_DB_PREFIX."product WHERE rowid=".$id_product.";";
+    $result = $db->query($sql);
+
+    $ref='';
+    if ($result) {
+        $num = $db->num_rows($result);
+        $i = 0;
+        while ($i < $num) {
+            $obj = $db->fetch_object($result);
+            $i++;
+        }
+        $db->free($result);
+    } else dol_print_error($db);
+
+    return $obj;
 }
 
 // End of page

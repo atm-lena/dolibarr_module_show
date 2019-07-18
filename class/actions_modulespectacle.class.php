@@ -124,7 +124,7 @@ class ActionsModuleSpectacle
 
             //Add "New Show" button
             print '<div class="inline-block divButAction">';
-            print("<a class=\"butAction\" href='".dol_buildpath('/modulespectacle/spectacle_card.php',1)."?action=create&product=".$object->id."'>".$langs->trans('NewShow')."</a>");
+            print("<a class=\"butAction\" href='".dol_buildpath('/modulespectacle/spectacle_card.php',1)."?action=create&product=".$object->id."&ref=".$object->ref."&label=".$object->label."&amount=".$object->price."'>".$langs->trans('NewShow')."</a>");
             print '</div>';
         return 0;
     }
